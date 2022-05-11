@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/BillingAPI")
 public class BillingAPI extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	Billing billobj = new Billing();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,8 +35,15 @@ public class BillingAPI extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		
+		
+		String output = billobj.insertUnitCount(request.getParameter("AccountNumber"), 
+				 request.getParameter("name"), 
+				request.getParameter("unitCount"), 
+				request.getParameter("month"));
+			
+
+response.getWriter().write(output); 
 	}
 
 	/**

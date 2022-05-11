@@ -31,7 +31,60 @@ public class Billing {
 		
 		//Add unit count 
 			
-	    //Add unit count to the user's account
+		    //Add unit count to the user's account
+			public String insertUnitCount(String accno, String uname, String unit, String bmonth) { 
+						
+						String output = ""; 
+						
+						
+						
+						try { 
+							Connection con = connect(); 
+							
+							if (con == null) {
+								return "Error while connecting to the database for inserting."; } 
+								
+								// create a prepared statement
+								String query;
+							
+								query = " insert into billing_tb(`billID`,`AccountNumber`,`name`,`unitCount`,`month`,`date`)" + " values (?, ?, ?, ?, ?,?)" ; 
+								PreparedStatement preparedStmt = con.prepareStatement(query);
+								 
+								// binding values
+								preparedStmt.setInt(1, 0); 
+								preparedStmt.setInt(2, Integer.parseInt(accno)); 
+								preparedStmt.setString(3, uname); 
+								preparedStmt.setFloat(4, Float.parseFloat(unit)); 
+								preparedStmt.setString(5, bmonth); 
+								
+								Date date = new Date();
+								preparedStmt.setDate(6, new java.sql.Date(date.getTime()));
+								
+								
+								//float no = Float.valueOf(unit.toString());
+								//String billAmount= String.valueOf(calculateBill(no));
+								
+								//preparedStmt.setFloat(6, Float.parseFloat(billAmount)); 
+								//preparedStmt.setString(7, issuedDate);
+								
+								
+								
+							
+								// execute the statement
+								preparedStmt.execute(); 
+								con.close(); 
+								
+								String newItems = readUnitCount(); 
+								 output = "{\"status\":\"success\", \"data\": \"" + 
+								 newItems + "\"}"; 
+								
+								
+						} catch (Exception e) { 
+							output = "{\"status\":\"error\", \"data\": \"Error while inserting the item.\"}";
+							System.err.println(e.getMessage()); 
+						}
+						return output; 
+					} 
 
 		
 		
