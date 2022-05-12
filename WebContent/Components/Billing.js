@@ -130,7 +130,7 @@ function validateCustomerForm()
 	// CODE
 	if ($("#AccountNumber").val().trim() == "")
 	{
-	return "Insert NIC.";
+	return "Insert Account Number";
 	}
 	// NAME
 	if ($("#name").val().trim() == "")
@@ -141,13 +141,13 @@ function validateCustomerForm()
 // NAME
 	if ($("#unitCount").val().trim() == "")
 	{
-	return "Insert Last Name.";
+	return "Insert Unit Count";
 }
 
 // Home No
 	if ($("#month").val().trim() == "")
 	{
-	return "Insert Last Name.";
+	return "Insert Month";
 }
 
 	return true;
