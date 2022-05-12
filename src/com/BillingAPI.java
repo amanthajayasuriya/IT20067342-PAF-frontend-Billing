@@ -44,7 +44,8 @@ public class BillingAPI extends HttpServlet {
 		String output = billobj.insertUnitCount(request.getParameter("AccountNumber"), 
 				 request.getParameter("name"), 
 				request.getParameter("unitCount"), 
-				request.getParameter("month"));
+				request.getParameter("month"),
+				request.getParameter("billAmount"));
 			
 
 response.getWriter().write(output); 
@@ -56,12 +57,16 @@ response.getWriter().write(output);
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		Map paras = getParasMap(request); 
+		 Map paras = getParasMap(request); 
+		 String billAmount= paras.get("unitCount").toString();
+		 float unitCount=Float.parseFloat(billAmount);
+		 Float amount = billobj.calculateBill1(unitCount);
 		 String output = billobj.updateBill(paras.get("hidItemIDSave").toString(), 
 											 paras.get("AccountNumber").toString(), 
 											paras.get("name").toString(), 
 											paras.get("unitCount").toString(),
-											paras.get("month").toString());
+											paras.get("month").toString(),
+											amount.toString());
 											
 											
 		 

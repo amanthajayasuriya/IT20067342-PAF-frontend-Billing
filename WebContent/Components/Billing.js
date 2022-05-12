@@ -1,3 +1,9 @@
+$(document).ready(function()
+{
+$("#alertSuccess").hide();
+$("#alertError").hide();
+});
+
 
  $(document).on("click", "#btnSave", function(event)
 { 
@@ -76,7 +82,7 @@ $(document).on("click", ".btnUpdate", function(event)
 		 $("#unitCount").val($(this).closest("tr").find('td:eq(2)').text()); 
 		 $("#month").val($(this).closest("tr").find('td:eq(3)').text()); 
 		// $("#billAmount").val($(this).closest("tr").find('td:eq(4)').text());
-		 $("#date").val($(this).closest("tr").find('td:eq(5)').text());  
+		 $("#date").val($(this).closest("tr").find('td:eq(4)').text());  
 		});
 
 

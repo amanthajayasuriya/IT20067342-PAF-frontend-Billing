@@ -32,7 +32,7 @@ public class Billing {
 		//Add unit count 
 			
 		    //Add unit count to the user's account
-			public String insertUnitCount(String accno, String uname, String unit, String bmonth) { 
+			public String insertUnitCount(String accno, String uname, String unit, String bmonth,String bamount) { 
 						
 						String output = ""; 
 						
@@ -47,7 +47,7 @@ public class Billing {
 								// create a prepared statement
 								String query;
 							
-								query = " insert into billing_tb(`billID`,`AccountNumber`,`name`,`unitCount`,`month`,`date`)" + " values (?, ?, ?, ?, ?,?)" ; 
+								query = " insert into billing_tb(`billID`,`AccountNumber`,`name`,`unitCount`,`month`,`billAmount`,`date`)" + " values (?, ?, ?, ?, ?,?,?)" ; 
 								PreparedStatement preparedStmt = con.prepareStatement(query);
 								 
 								// binding values
@@ -57,16 +57,16 @@ public class Billing {
 								preparedStmt.setFloat(4, Float.parseFloat(unit)); 
 								preparedStmt.setString(5, bmonth); 
 								
+								
+								
+								
+								float no = Float.valueOf(unit.toString());
+								String billAmount= String.valueOf(calculateBill1(no));
+								
+								preparedStmt.setFloat(6, Float.parseFloat(billAmount)); 
+								
 								Date date = new Date();
-								preparedStmt.setDate(6, new java.sql.Date(date.getTime()));
-								
-								
-								//float no = Float.valueOf(unit.toString());
-								//String billAmount= String.valueOf(calculateBill(no));
-								
-								//preparedStmt.setFloat(6, Float.parseFloat(billAmount)); 
-								//preparedStmt.setString(7, issuedDate);
-								
+								preparedStmt.setDate(7, new java.sql.Date(date.getTime()));
 								
 								
 							
@@ -85,6 +85,35 @@ public class Billing {
 						}
 						return output; 
 					} 
+			
+			//Calculate bill amount according to usage of unit
+			private float calculateBill(float no) {
+				
+			float sum=0;
+				 if (no <= 54) {
+					 return  sum=(float) (no*7.85);
+				 }
+				 if (54 < no && no <= 81) {
+					 
+					 return sum= (float) ((54 * 7.85) + ((no - 54) * 10)+ 90);
+				 }
+				 if (81 < no && no <= 108) {
+					 
+					 return sum= (float) ((54 * 7.85) + (27 * 10)+ ((no - 81)*27.75) + 480);
+				 }
+				 
+				 if (108 < no && no <= 162) {
+					 
+					 return sum= (float) ((54 * 7.85) + (27 * 10)+ (27 * 27.75) + ((no - 108)*32) + 480);
+				 }
+				 
+				 if (no >162 )
+				     return sum =  (float) ((54 * 7.85) + (27 * 10)+ (27 * 27.75) +  (54*32) + ((no - 162)*45) +540 );
+				 
+				return sum;
+				
+				
+			}	
 
 		
 		
@@ -113,7 +142,7 @@ public class Billing {
 					 + "<th>Unit Count</th>"
 					 + "<th> Month</th>" 
 					 + "<th> Bill Date</th>" 
-					// +"<th> Bill Amount</th>"
+					 +"<th> Bill Amount</th>"
 					+ "<th>Update</th><th>Remove</th></tr>"; 
 			 
 			 String query = "select * from billing_tb "; 
@@ -130,18 +159,18 @@ public class Billing {
 				 String unitCount = Integer.toString(res.getInt("unitCount")); 
 				 String month = res.getString("month"); 
 				 String date = res.getString("date"); 
-				// String billAmount = Float.toString(res.getFloat("billAmount"));
+				 String billAmount = Float.toString(res.getFloat("billAmount"));
 				//  String issuedDate = res.getString("issuedDate"); 
 				 
 				 
 				 // Add a row into the html table
 				 output += "<tr><td><input id='hidItemIDUpdate' name='hidItemIDUpdate' type='hidden' value='"+billID+"'>"+ AccountNumber+"</td>"; 
-				// output += "<td>" + AccountNumber+ "</td>"; 
+				 //output += "<td>" + AccountNumber+ "</td>"; 
 				 output += "<td>" + name + "</td>"; 
 				 output += "<td>" + unitCount + "</td>";
 				 output += "<td>" + month + "</td>"; 
 				 output += "<td>" + date + "</td>"; 
-				// output += "<td>" + billAmount + "</td>";
+				output += "<td>" + billAmount + "</td>";
 				 // buttons
 				 output += "<td><form  method='post' action='updateItems.jsp'>"
 				 		+ "<input name='btnUpdate' type='button' value='Update' "
@@ -168,7 +197,7 @@ public class Billing {
 
 	
 		//updateBillDetails
-		public String updateBill(String bid ,String accno, String uname, String unit, String bmonth)
+		public String updateBill(String bid ,String accno, String uname, String unit, String bmonth,String bamount)
 		{ 
 			 String output = ""; 
 			 try
@@ -180,7 +209,7 @@ public class Billing {
 				 
 			 } 
 			 // create a prepared statement
-			 String query = "UPDATE billing_tb SET AccountNumber=?,name=?,unitCount=?,month=? ,date=? where billID=?";
+			 String query = "UPDATE billing_tb SET AccountNumber=?,name=?,unitCount=?,month=?,billAmount=? ,date=? where billID=?";
 				
 			 PreparedStatement preparedStmt = con.prepareStatement(query);
 			 
@@ -194,11 +223,11 @@ public class Billing {
 				//float no = Float.valueOf(unit.toString());
 				//float billAmount= calculateBill1(no);
 				
-				//preparedStmt.setFloat(5,billAmount); 
-				//preparedStmt.setString(6, issuedDate);
+				preparedStmt.setFloat(5,Float.parseFloat(bamount)); 
+				
 				Date date = new Date();  
-				 preparedStmt.setDate(5, new java.sql.Date(date.getTime()));
-				preparedStmt.setInt(6, Integer.parseInt(bid)); 
+				 preparedStmt.setDate(6, new java.sql.Date(date.getTime()));
+				preparedStmt.setInt(7, Integer.parseInt(bid)); 
 			
 				// execute the statement
 				preparedStmt.execute(); 
@@ -216,7 +245,7 @@ public class Billing {
 	
 
 		//Calculate bill amount according to usage of unit
-		private float calculateBill1(float no) {
+		public float calculateBill1(float no) {
 			
 		float sum=0;
 			 if (no <= 54) {
