@@ -15,7 +15,12 @@
 <script src="Components/Billing.js"></script>
 </head>
 <body >
-	<div class="container"><div class="row"><div class="col-6">
+<div class="bg-light">
+     <div class="container">
+     <div class="row">
+     <div class="col-12">
+	
+     <center><h1 style="font-size:380%;">ELECTRIC BILL GENERATION</h1></center>
 	<h1> Bill Generate: </h1>
 <br>
 		
@@ -43,7 +48,7 @@
   		<div id="alertSuccess" class="alert alert-success"></div>
 				<div id="alertError" class="alert alert-danger"></div>
 				<br>
-				<div id="divItemsGrid">
+				<div class="table table-Stiped" id="divItemsGrid">
 				 <%
 				 Billing billobj = new Billing(); 
 				 out.print(billobj.readUnitCount()); 
@@ -52,5 +57,6 @@
 	</div>
 	</div>
 	</div>
+</div>
 </body>
 </html>
