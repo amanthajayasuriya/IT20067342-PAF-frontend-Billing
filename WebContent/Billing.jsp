@@ -40,8 +40,7 @@
 			<br>
 			
 			
-			<input id="btnSave" name="btnSave" type="button" value="Save" 
-			 class="btn btn-primary">
+			<input id="btnSave" name="btnSave" type="button" value="Save" class="btn btn-primary" >
 			<input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">
 			</form>
   		

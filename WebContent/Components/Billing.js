@@ -1,3 +1,12 @@
+$(document).ready(function(){
+    $("body").on({
+        mouseenter: function(){
+            $(this).css("background-color", "gray");
+        },  
+    });    
+});
+
+
 $(document).ready(function()
 {
 $("#alertSuccess").hide();
